@@ -1,0 +1,8 @@
+namespace: default
+
+vault:
+  role: my-k8s-role
+  usernamePath: dev/test
+  usernameKey: username
+  passwordPath: dev/db
+  passwordKey: password

@@ -1,0 +1,38 @@
+# Source: test/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vault-agent-config
+  namespace: {{ .Values.namespace }}
+data:
+  vault-agent.hcl: |
+    auto_auth {
+      method "kubernetes" {
+        mount_path = "auth/kubernetes"
+        config = {
+          role = "{{ .Values.vault.role }}"
+        }
+      }
+    }
+
+    cache {
+      use_auto_auth_token = true
+    }
+
+    listener "tcp" {
+      address = "127.0.0.1:8200"
+      tls_disable = true
+    }
+
+    sink "file" {
+      path = "/vault/secrets/token"
+    }
+
+  template.hcl: |
+    template {
+      destination = "/vault/secrets/.env"
+      contents = <<EOT
+      {{ printf "USERNAME=\"{{ with secret \"secret/data/%s\" }}{{ .Data.data.%s }}{{ end }}\"" .Values.vault.usernamePath .Values.vault.usernameKey }}
+      {{ printf "PASSWORD=\"{{ with secret \"secret/data/%s\" }}{{ .Data.data.%s }}{{ end }}\"" .Values.vault.passwordPath .Values.vault.passwordKey }}
+      EOT
+    }
