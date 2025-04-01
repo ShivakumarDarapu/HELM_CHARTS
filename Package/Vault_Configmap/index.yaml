@@ -9,6 +9,6 @@ entries:
     name: test
     type: application
     urls:
-    - https://github.com/shivakumar-darapu/HELM_CHARTS.git/test-0.1.0.tgz
+    - https://github.com/ShivakumarDarapu/HELM_CHARTS/blob/main/Package/Vault_Configmap/test-0.1.0.tgz
     version: 0.1.0
 generated: "2025-04-01T18:43:08.50500144+05:30"
